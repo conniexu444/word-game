@@ -4,17 +4,18 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 
 ## Game Rules
 
-1. Start with 14 random letters (based on Bananagrams letter distribution)
+1. Start with 8 random letters (based on Bananagrams letter distribution)
 2. Drag and drop letters onto the grid to form words
 3. All letters must be connected (like Scrabble/Bananagrams)
 4. Words can be horizontal or vertical (minimum 2 letters)
-5. Goal: Use all 14 letters to make the **minimum number of words**
+5. Words are validated against an English dictionary
+6. Goal: Use all 8 letters to make the **minimum number of valid words**
 
 ## How to Play
 
 ### Starting the Game
 - Open `index.html` in a web browser
-- Click "New Game" to get a fresh set of 14 random letters
+- Click "New Game" to get a fresh set of 8 random letters
 
 ### Placing Letters
 - **Drag** letters from the "Available Letters" section to the grid
@@ -37,8 +38,10 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 - Bananagrams-style letter distribution
 - Drag-and-drop interface
 - Real-time letter placement tracking
+- Dictionary-based word validation (using Free Dictionary API)
 - Word validation and counting
 - Connectivity checking (ensures all letters connect)
+- Visual indicators for valid/invalid words
 - Responsive design
 
 ## Technical Details
@@ -47,17 +50,20 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 - Letter distribution matches Bananagrams tile frequencies
 - Grid validates that all placed letters form a single connected group
 - Finds all horizontal and vertical words automatically
+- Dictionary validation using Free Dictionary API (https://dictionaryapi.dev/)
+- Async word validation with loading states
+- Visual feedback for valid and invalid words
 
 ## Future Enhancements
 
 Possible improvements:
-- Dictionary API integration for real word validation
 - Score tracking and leaderboards
 - Adjustable difficulty (more/fewer letters)
 - Hint system
 - Save/load game state
 - Multiplayer mode
 - Mobile touch support optimization
+- Alternative dictionary sources
 
 ## Running the Game
 

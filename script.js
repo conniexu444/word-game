@@ -25,7 +25,7 @@ let gameState = {
 
 // Initialize game
 function initGame() {
-    gameState.letters = generateRandomLetters(14);
+    gameState.letters = generateRandomLetters(8);
     gameState.letterBank = [...gameState.letters];
     gameState.grid = Array(15).fill(null).map(() => Array(15).fill(null));
     gameState.words = [];
@@ -286,9 +286,20 @@ function findWords() {
     return words;
 }
 
-// Validate words (basic English word validation)
-// In a real implementation, you'd check against a dictionary API or word list
-function validateWords() {
+// Check if a word is valid using dictionary API
+async function checkWordInDictionary(word) {
+    try {
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`);
+        return response.ok;
+    } catch (error) {
+        console.error(`Error checking word "${word}":`, error);
+        // If API fails, assume word is valid to not block gameplay
+        return true;
+    }
+}
+
+// Validate words with dictionary check
+async function validateWords() {
     const words = findWords();
     gameState.words = words;
 
@@ -304,8 +315,22 @@ function validateWords() {
         return;
     }
 
-    document.getElementById('word-count').textContent = words.length;
-    displayValidationResults(words, true);
+    // Show loading state
+    displayValidationResults(words, true, '', true);
+
+    // Check each word against dictionary
+    const wordValidations = await Promise.all(
+        words.map(async (wordObj) => ({
+            ...wordObj,
+            isValid: await checkWordInDictionary(wordObj.word)
+        }))
+    );
+
+    // Count valid words
+    const validWords = wordValidations.filter(w => w.isValid);
+    document.getElementById('word-count').textContent = validWords.length;
+
+    displayValidationResults(wordValidations, true);
 }
 
 // Check if all letters on the grid are connected
@@ -355,7 +380,7 @@ function areAllLettersConnected() {
 }
 
 // Display validation results
-function displayValidationResults(words, success, errorMessage = '') {
+function displayValidationResults(words, success, errorMessage = '', isLoading = false) {
     const resultsElement = document.getElementById('validation-results');
     resultsElement.classList.remove('hidden');
 
@@ -363,16 +388,30 @@ function displayValidationResults(words, success, errorMessage = '') {
 
     if (!success) {
         html += `<p class="error">${errorMessage}</p>`;
+    } else if (isLoading) {
+        html += `<p>Checking words against dictionary...</p>`;
     } else {
-        html += `<p class="success">All letters are connected! You formed ${words.length} word${words.length !== 1 ? 's' : ''}.</p>`;
+        const validWords = words.filter(w => w.isValid !== false);
+        const invalidWords = words.filter(w => w.isValid === false);
+
+        if (invalidWords.length === 0) {
+            html += `<p class="success">All letters are connected! You formed ${validWords.length} valid word${validWords.length !== 1 ? 's' : ''}!</p>`;
+        } else {
+            html += `<p class="success">All letters are connected!</p>`;
+            html += `<p class="error">${invalidWords.length} invalid word${invalidWords.length !== 1 ? 's' : ''} found. Try rearranging your letters!</p>`;
+        }
     }
 
-    if (words.length > 0) {
+    if (words.length > 0 && !isLoading) {
         html += '<div class="word-list">';
-        words.forEach(({ word, direction }) => {
-            html += `<div class="word-item">
-                <span class="word">${word}</span>
-                <span class="status">(${direction})</span>
+        words.forEach(({ word, direction, isValid }) => {
+            const validClass = isValid === false ? 'invalid' : '';
+            const statusIcon = isValid === false ? '❌' : '✓';
+            const statusText = isValid === false ? 'not in dictionary' : direction;
+
+            html += `<div class="word-item ${validClass}">
+                <span class="word">${word} ${statusIcon}</span>
+                <span class="status">(${statusText})</span>
             </div>`;
         });
         html += '</div>';
