@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimum Words Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Minimum Words Game</h1>
+            <p>Connect all letters to form the fewest words possible!</p>
+        </header>
+
+        <div class="game-info">
+            <div class="info-item">
+                <span class="label">Letters:</span>
+                <span id="letter-count" class="value">14</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Words Found:</span>
+                <span id="word-count" class="value">0</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Letters Placed:</span>
+                <span id="placed-count" class="value">0/14</span>
+            </div>
+        </div>
+
+        <div class="game-board">
+            <div id="grid" class="grid"></div>
+        </div>
+
+        <div class="letter-bank-container">
+            <h3>Available Letters</h3>
+            <div id="letter-bank" class="letter-bank"></div>
+        </div>
+
+        <div class="controls">
+            <button id="new-game" class="btn btn-primary">New Game</button>
+            <button id="validate" class="btn btn-secondary">Validate Words</button>
+            <button id="clear-board" class="btn btn-secondary">Clear Board</button>
+        </div>
+
+        <div id="validation-results" class="validation-results"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
