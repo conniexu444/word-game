@@ -4,7 +4,7 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 
 ## Game Rules
 
-1. Start with 8 random letters (based on Bananagrams letter distribution)
+1. Start with 8 curated letters that can form multiple words
 2. Drag and drop letters onto the grid to form words
 3. All letters must be connected (like Scrabble/Bananagrams)
 4. Words can be horizontal or vertical (minimum 2 letters)
@@ -34,8 +34,8 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 
 ## Features
 
-- 15x15 draggable grid
-- Bananagrams-style letter distribution
+- 10x10 draggable grid (optimized for 8 letters)
+- Curated letter sets that guarantee valid word combinations
 - Drag-and-drop interface
 - Real-time letter placement tracking
 - Dictionary-based word validation (using Free Dictionary API)
@@ -47,7 +47,9 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 ## Technical Details
 
 - Pure HTML, CSS, and JavaScript (no frameworks required)
-- Letter distribution matches Bananagrams tile frequencies
+- 15 curated letter sets designed to form multiple valid words
+- Letters are shuffled randomly from predefined sets for fair gameplay
+- 10x10 grid optimized for 8-letter puzzles
 - Grid validates that all placed letters form a single connected group
 - Finds all horizontal and vertical words automatically
 - Dictionary validation using Free Dictionary API (https://dictionaryapi.dev/)

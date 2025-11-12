@@ -14,20 +14,39 @@ const LETTER_POINTS = {
     'Y': 4, 'Z': 10
 };
 
+// Predefined letter sets that can form multiple words
+const LETTER_SETS = [
+    ['S', 'T', 'A', 'R', 'E', 'T', 'S', 'H'], // STAR, STARS, HATS, TEARS, RATS, HASTE, etc.
+    ['C', 'A', 'R', 'E', 'T', 'S', 'O', 'N'], // CARE, CARES, STORE, NOTES, STONE, etc.
+    ['P', 'L', 'A', 'N', 'T', 'E', 'R', 'S'], // PLANT, PLANTS, ANTS, LANES, etc.
+    ['G', 'R', 'O', 'W', 'T', 'H', 'S', 'E'], // GROW, GROWTH, WEST, HOSE, etc.
+    ['B', 'R', 'E', 'A', 'K', 'S', 'T', 'O'], // BREAK, BREAKS, STORE, BOATS, etc.
+    ['F', 'L', 'O', 'W', 'E', 'R', 'S', 'T'], // FLOWER, FLOWERS, WEST, SLOW, etc.
+    ['M', 'A', 'S', 'T', 'E', 'R', 'S', 'I'], // MASTER, MASTERS, MIST, TIRES, etc.
+    ['D', 'R', 'E', 'A', 'M', 'S', 'T', 'I'], // DREAM, DREAMS, MIST, TIDES, etc.
+    ['S', 'P', 'R', 'I', 'N', 'T', 'E', 'S'], // PRINT, PRINTS, PINES, STEP, etc.
+    ['C', 'L', 'E', 'A', 'R', 'S', 'T', 'O'], // CLEAR, CLEARS, STORE, COAST, etc.
+    ['H', 'E', 'A', 'R', 'T', 'S', 'O', 'N'], // HEART, HEARTS, STONE, ANTS, etc.
+    ['W', 'I', 'N', 'T', 'E', 'R', 'S', 'A'], // WINTER, WINTERS, ANTS, WEARS, etc.
+    ['L', 'I', 'G', 'H', 'T', 'E', 'R', 'S'], // LIGHT, LIGHTS, TIRES, etc.
+    ['S', 'H', 'A', 'R', 'E', 'D', 'O', 'T'], // SHARE, SHARED, TOAD, HOSE, etc.
+    ['T', 'R', 'A', 'I', 'N', 'S', 'E', 'D']  // TRAIN, TRAINS, ANTS, DINES, etc.
+];
+
 // Game state
 let gameState = {
     letters: [],
-    grid: Array(15).fill(null).map(() => Array(15).fill(null)),
+    grid: Array(10).fill(null).map(() => Array(10).fill(null)),
     letterBank: [],
     words: [],
-    gridSize: 15
+    gridSize: 10
 };
 
 // Initialize game
 function initGame() {
     gameState.letters = generateRandomLetters(8);
     gameState.letterBank = [...gameState.letters];
-    gameState.grid = Array(15).fill(null).map(() => Array(15).fill(null));
+    gameState.grid = Array(10).fill(null).map(() => Array(10).fill(null));
     gameState.words = [];
 
     createGrid();
@@ -36,22 +55,19 @@ function initGame() {
     clearValidationResults();
 }
 
-// Generate random letters based on Bananagrams distribution
+// Generate letters from predefined sets that can form words
 function generateRandomLetters(count) {
-    const letterPool = [];
-    for (const [letter, frequency] of Object.entries(LETTER_DISTRIBUTION)) {
-        for (let i = 0; i < frequency; i++) {
-            letterPool.push(letter);
-        }
+    // Pick a random letter set from the predefined sets
+    const randomSetIndex = Math.floor(Math.random() * LETTER_SETS.length);
+    const selectedSet = [...LETTER_SETS[randomSetIndex]];
+
+    // Shuffle the letters for variety
+    for (let i = selectedSet.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [selectedSet[i], selectedSet[j]] = [selectedSet[j], selectedSet[i]];
     }
 
-    const selectedLetters = [];
-    for (let i = 0; i < count; i++) {
-        const randomIndex = Math.floor(Math.random() * letterPool.length);
-        selectedLetters.push(letterPool.splice(randomIndex, 1)[0]);
-    }
-
-    return selectedLetters;
+    return selectedSet;
 }
 
 // Create the grid
