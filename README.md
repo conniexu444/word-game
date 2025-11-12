@@ -35,7 +35,9 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 ## Features
 
 - 10x10 draggable grid (optimized for 8 letters)
-- Curated letter sets that guarantee valid word combinations
+- **365 unique daily puzzles** - one for each day of the year!
+- Curated letter sets themed by season (winter words in winter, summer words in summer, etc.)
+- Letter sets guarantee valid word combinations
 - Drag-and-drop interface
 - Real-time letter placement tracking
 - Dictionary-based word validation (using Free Dictionary API)
@@ -47,8 +49,10 @@ A word puzzle game where you try to connect all letters to form the **fewest wor
 ## Technical Details
 
 - Pure HTML, CSS, and JavaScript (no frameworks required)
-- 15 curated letter sets designed to form multiple valid words
-- Letters are shuffled randomly from predefined sets for fair gameplay
+- **365 curated letter sets** - one unique puzzle for each day of the year
+- Letter sets are seasonally themed (e.g., "SNOWFALL" in winter, "BEACHES" in summer)
+- Each set is designed to form multiple valid words
+- Letters are shuffled from predefined sets for variety while maintaining solvability
 - 10x10 grid optimized for 8-letter puzzles
 - Grid validates that all placed letters form a single connected group
 - Finds all horizontal and vertical words automatically
